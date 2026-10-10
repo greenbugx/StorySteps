@@ -270,8 +270,9 @@ pnpm run test
 The suite runs in Vitest with `fake-indexeddb` and covers the parts where correctness is not obvious from the code:
 schema validation of dates and coordinates, record creation and update, deletion with and without audio, orphan audio
 cleanup, archive search and filtering, the export and import round trip with audio, rejection of malformed archives
-without touching existing data, and the parsing of model output including fenced JSON, unusable dates and unknown
-categories.
+without touching existing data, the parsing of model output including fenced JSON, unusable dates and unknown
+categories, and a check that the ONNX Runtime files served from this origin really expose the WebGPU entry point
+before the app hands them to the transcription worker.
 
 Everything else, including the map, recording, transcription, offline startup and the whole interface, was checked by
 running the app in a browser rather than by unit tests.

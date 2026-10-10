@@ -88,7 +88,7 @@ export default defineConfig({
       registerType: 'prompt',
       includeAssets: ['favicon.svg', 'storysteps-icon.svg', 'storysteps-maskable.svg'],
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest,woff2}'],
         globIgnores: ['runtime/**'],
         runtimeCaching: [
           {
