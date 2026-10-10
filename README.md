@@ -276,14 +276,36 @@ categories.
 Everything else, including the map, recording, transcription, offline startup and the whole interface, was checked by
 running the app in a browser rather than by unit tests.
 
+## Licence
+
+StorySteps itself, meaning the source in this repository, is released under the MIT licence. See [LICENSE](LICENSE).
+That licence covers this project only. The components below keep their own terms.
+
 ## Licences and attribution
 
-- LiteRT-LM, Google, Apache-2.0. The WASM runtime is copied out of the npm package at build time and served from this
-  origin.
-- Gemma 4 E2B, from `litert-community/gemma-4-E2B-it-litert-lm`, downloaded at runtime under its own model licence.
-- Whisper base ONNX export, `onnx-community/whisper-base`, Apache-2.0.
-- ONNX Runtime Web, MIT, copied out of the npm package at build time.
-- Transformers.js, Apache-2.0.
-- Map tiles from OpenStreetMap contributors, © OpenStreetMap contributors, available under the Open Database License.
-- Dexie, Apache-2.0. Leaflet, BSD-2-Clause. Zod, MIT. React and Vite and their surrounding tooling keep their own
-  licences in the lockfile.
+| Component | Licence | Notes |
+| --- | --- | --- |
+| StorySteps source | MIT | This repository, see `LICENSE` |
+| React Leaflet | Hippocratic License 2.1 | Ethical Source licence, see the exception below |
+| Leaflet | BSD-2-Clause | Map rendering |
+| LiteRT-LM | Apache-2.0 | WASM runtime copied from the npm package at build time and served from this origin |
+| ONNX Runtime Web | MIT | WASM runtime copied from the npm package at build time and served from this origin |
+| Transformers.js | Apache-2.0 | Runs Whisper in the browser worker |
+| Dexie | Apache-2.0 | IndexedDB access |
+| Geist, Newsreader | SIL Open Font License 1.1 | Bundled as woff2 files through `@fontsource` |
+| Zod, React, React Router, Next Themes, Sonner, Tailwind, Vite, Vitest, ESLint and the shadcn/ui tooling | MIT | Runtime and build tooling |
+| lucide-react | ISC | Icons |
+| OpenStreetMap tiles | Open Database License | Tiles are fetched at runtime, not redistributed; attribution is shown on the map |
+| Gemma 4 E2B | Gemma terms, via `litert-community/gemma-4-E2B-it-litert-lm` | Downloaded at runtime by the user, never redistributed here |
+| Whisper base ONNX export | Apache-2.0, via `onnx-community/whisper-base` | Downloaded at runtime by the user |
+
+### The React Leaflet exception
+
+React Leaflet 5.0.0 is licensed under the Hippocratic License 2.1 rather than MIT. That is an Ethical Source licence: it
+grants broad permissions but adds terms that MIT does not have, including a requirement to use the software in line with
+human rights principles and laws, a termination clause, arbitration and an indemnity. Any build of StorySteps therefore
+carries Hippocratic terms for the map user interface, while the rest of the project stays MIT.
+
+This is a known and accepted trade-off here, because the alternative is maintaining a small hand written Leaflet wrapper.
+If you fork this project and need a purely MIT dependency set, that wrapper is the only piece that needs replacing:
+`src/components/atlas/AtlasMap.tsx` is the single file that touches React Leaflet.
