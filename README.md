@@ -1,3 +1,5 @@
+<p align="right"><img src="public/favicon.png" width="112" height="112" alt="StorySteps logo" /></p>
+
 # StorySteps
 
 Every place has a story. Go outside and find it.

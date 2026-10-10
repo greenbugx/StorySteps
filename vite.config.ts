@@ -86,7 +86,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['favicon.svg', 'storysteps-icon.svg', 'storysteps-maskable.svg'],
+      includeAssets: ['favicon.png'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest,woff2}'],
         globIgnores: ['runtime/**'],
@@ -111,10 +111,7 @@ export default defineConfig({
         orientation: 'any',
         start_url: '/',
         scope: '/',
-        icons: [
-          { src: 'storysteps-icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
-          { src: 'storysteps-maskable.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' },
-        ],
+        icons: [{ src: 'favicon.png', sizes: '512x512', type: 'image/png', purpose: 'any' }],
       },
     }),
   ],
