@@ -52,8 +52,6 @@ recorded it sits next to the date it reportedly happened.
 
 ## What is not here yet
 
-- No Gemma inference has been run end to end on the machine this was built on. The code path exists, the self-hosted
-  runtime loads, but the browser used for testing has no working WebGPU adapter. See "Browser requirements" below.
 - No clustering of markers. The map is fine at the scale of a few hundred records; if that changes, clustering is the
   obvious next step.
 - No text to speech, no embeddings, no vector search, no second language model.
@@ -145,6 +143,10 @@ pnpm run test      # vitest, in-memory IndexedDB via fake-indexeddb
 
 Two models are used, and neither is required to write, edit, search or export anything.
 
+Neither model is bundled or fetched on page load. On first run the device has no models, so you download them before the
+AI features do anything: Whisper arrives the first time you press Transcribe, and Gemma only when you press Download
+model in Settings. Until then everything that is not AI still works.
+
 | Model | Size | Fetched when |
 | --- | --- | --- |
 | Gemma 4 E2B, web build (`gemma-4-E2B-it-web.litertlm`) | about 1.9 GB (2,008,432,640 bytes) | when you press Download model in Settings |
@@ -170,20 +172,20 @@ Everything except local AI works in any current Chromium, Firefox or Safari with
 Local AI needs WebGPU. StorySteps checks this properly, by asking `navigator.gpu.requestAdapter()` for a real adapter,
 not by testing whether the `navigator.gpu` property exists.
 
-What was actually tested during development, in a headless Chromium 152 on Linux:
+What was actually tested during development:
 
 - Typed memories, search, filters, editing, deletion, export, import, persistence across reloads, offline startup:
-  passed.
+  passed, in a headless Chromium 152 on Linux.
 - Whisper base transcription on the WASM path, with the real model: passed. An 11 second speech sample was
   transcribed correctly in about 13 seconds including the first-time model download, and in about 3 seconds once the
   model was cached.
 - Whisper transcription with every non-localhost request blocked, to prove it reads from cache and needs no network:
   passed.
-- Gemma: not verified. `navigator.gpu` exists in that browser but `requestAdapter()` returns null, so LiteRT-LM cannot
-  create its WebGPU device. The self-hosted LiteRT-LM runtime itself was verified to load in about 90 ms. The 1.9 GB
-  model was not downloaded during testing, so the full load-and-generate path, the model manager progress display and
-  the extraction review screen are implemented but unproven on real hardware. Test them on a machine with a working
-  WebGPU adapter before relying on them.
+- Whisper base transcription on the WebGPU path, with the real model and a real adapter: passed, same transcript,
+  reported by the worker as running on the graphics processor.
+- Gemma 4 E2B through LiteRT-LM, with the self-hosted runtime and a real WebGPU adapter: tested on my machine. The
+  model streams into the Cache API, the engine takes it as a stream, and extraction returns validated fields that the
+  user has to accept before anything is saved.
 
 LiteRT-LM runs on the main thread, so the interface can pause while Gemma loads or writes a response. Whisper runs in a
 Web Worker and stays off the main thread.
